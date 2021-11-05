@@ -21,19 +21,27 @@
 (require 'idee-java)
 
 
+(setq idee-tab-width 4)
+(setq tab-width idee-tab-width)
+(idee/set-tab-width)
+
 (defun quarkus-create-kubernetes-test ()
   "A simple java factory archetype."
   (interactive)
-  (let* ((base-path (concat (file-name-as-directory (idee-project-root-dir)) "integration-tests/kubernetes/quarkus-standard-way"))
+  (let* ((base-path (concat (file-name-as-directory (idee/project-root-dir)) "integration-tests/kubernetes/quarkus-standard-way"))
          (class-name (read-string "Config generator factory class name:" "Kubernetes"))
          (fqcn (format "io.quarkus.it.kubernetes.%s" class-name))
-         (resource (format "%s.properties" (idee-string-camelcase-to-kebabcase (idee-java-class-sans-suffix "Test" class-name)))))
+         (resource (format "%s.properties" (idee/string-camelcase-to-kebabcase (idee/java-class-sans-suffix "Test" class-name)))))
+    (setq yas-snippet-dirs (add-to-list 'yas-snippet-dirs (concat (file-name-as-directory (idee/project-root-dir)) ".idee/templates/")))
+    (yas-recompile-all)
+    (yas-reload-all)
 
     (message "Quarkus test using base path: %s" base-path)
-    (idee-java-archetype-create-class fqcn "qkubet" "src/test/java" base-path)
-    (idee-java-archetype-create-resource resource nil "src/test/resources" base-path)))
+    (idee/java-archetype-create-class fqcn "qkubet" "src/test/java" base-path)
+    (idee/java-archetype-create-resource resource nil "src/test/resources" base-path)))
 
-(idee-register-archetype
+
+(idee/archetype-register
   (make-idee-archetype
    :name "Quarkus Kubernetes Test"
    :description "A Quarkus Kubernetes Test"

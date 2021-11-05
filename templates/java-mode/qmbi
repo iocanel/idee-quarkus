@@ -1,0 +1,14 @@
+# name: Quarkus MultiBuildItem
+# key: qmbi
+# --
+`(idee/header)`
+
+`(idee/java-package-line)`
+
+import io.quarkus.builder.item.MultiBuildItem;
+
+public final class `(idee/java-class)` extends MultiBuildItem {
+
+  public `(idee/java-class)`() {
+  }
+}

@@ -1,8 +1,8 @@
 # name: Quarkus Kubernetes Test
 # key: qkubet
 # --
-`(idee-header)`
-package `(idee-java-package)`;
+`(idee/header)`
+package `(idee/java-package)`;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,14 +24,14 @@ import io.quarkus.test.ProdBuildResults;
 import io.quarkus.test.ProdModeTestResults;
 import io.quarkus.test.QuarkusProdModeTest;
 
-public class `(idee-java-class)` {
+public class `(idee/java-class)` {
 
     @RegisterExtension
     static final QuarkusProdModeTest config = new QuarkusProdModeTest()
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class).addClasses(GreetingResource.class))
-            .setApplicationName("`(idee-string-camelcase-to-kebabcase (idee-java-class-sans-suffix "Test"))`")
+            .setApplicationName("`(idee/string-camelcase-to-kebabcase (idee/java-class-sans-suffix "Test"))`")
             .setApplicationVersion("0.1-SNAPSHOT")
-            .withConfigurationResource("`(idee-string-camelcase-to-kebabcase (idee-java-class-sans-suffix "Test"))`.properties")
+            .withConfigurationResource("`(idee/string-camelcase-to-kebabcase (idee/java-class-sans-suffix "Test"))`.properties")
             .setLogFileName("k8s.log")
             .setForcedDependencies(Collections.singletonList(new AppArtifact("io.quarkus", "quarkus-kubernetes", Version.getVersion())));
 
@@ -48,7 +48,7 @@ public class `(idee-java-class)` {
                 .deserializeAsList(kubernetesDir.resolve("kubernetes.yml"));
         assertThat(kubernetesList.get(0)).isInstanceOfSatisfying(Deployment.class, d -> {
             assertThat(d.getMetadata()).satisfies(m -> {
-                assertThat(m.getName()).isEqualTo("`(idee-string-camelcase-to-kebabcase (idee-java-class-sans-suffix "Test"))`");
+                assertThat(m.getName()).isEqualTo("`(idee/string-camelcase-to-kebabcase (idee/java-class-sans-suffix "Test"))`");
             });
 
             assertThat(d.getSpec()).satisfies(deploymentSpec -> {

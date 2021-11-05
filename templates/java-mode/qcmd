@@ -1,0 +1,76 @@
+# name: Quarkus CLI Command
+# key: qcmd
+# --
+`idee-header`
+`idee-java-package-line`
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.Callable;
+
+import io.quarkus.cli.`(idee/java-class)`.Base`(idee/java-class)`Command;
+import io.quarkus.cli.`(idee/java-class)`.`(idee/java-class)`SystemRunner;
+import io.quarkus.cli.common.`(idee/java-class)`Options;
+import io.quarkus.cli.common.RunModeOption;
+import io.quarkus.devtools.project.`(idee/java-class)`Tool;
+import picocli.CommandLine;
+import picocli.CommandLine.Parameters;
+
+@CommandLine.Command(name = "`(idee/java-class)`", sortOptions = false, showDefaultValues = true, mixinStandardHelpOptions = false, showEndOfOptionsDelimiterInUsageHelp = true, header = "`(idee/java-class)` the current project.", headerHeading = "%n", commandListHeading = "%nCommands:%n", synopsisHeading = "%nUsage: ", parameterListHeading = "%n", optionListHeading = "Options:%n")
+public class `(idee/java-class)` extends Base`(idee/java-class)`Command implements Callable<Integer> {
+
+    @CommandLine.Mixin
+    protected RunModeOption runMode;
+
+    @CommandLine.ArgGroup(order = 1, exclusive = false, validate = false, heading = "%n`(idee/java-class)` options:%n")
+    `(idee/java-class)`Options `(idee/java-class)`Options = new `(idee/java-class)`Options();
+
+    @Parameters(description = "Additional parameters passed to the `(idee/java-class)` system")
+    List<String> params = new ArrayList<>();
+
+    @Override
+    public Integer call() {
+        try {
+            output.debug("`(idee/java-class)` project with initial parameters: %s", this);
+            output.throwIfUnmatchedArguments(spec.commandLine());
+
+            `(idee/java-class)`SystemRunner runner = getRunner();
+            `(idee/java-class)`SystemRunner.`(idee/java-class)`CommandArgs commandArgs = runner.prepare`(idee/java-class)`(`(idee/java-class)`Options, runMode, params);
+
+            if (runMode.isDryRun()) {
+                dryRun`(idee/java-class)`(spec.commandLine().getHelp(), runner.get`(idee/java-class)`Tool(), commandArgs);
+                return CommandLine.ExitCode.OK;
+            }
+
+            return runner.run(commandArgs);
+        } catch (Exception e) {
+            return output.handleCommandException(e,
+                    "Unable to `(idee/java-class)` project: " + e.getMessage());
+        }
+    }
+
+    void dryRun`(idee/java-class)`(CommandLine.Help help, `(idee/java-class)`Tool `(idee/java-class)`Tool, `(idee/java-class)`SystemRunner.`(idee/java-class)`CommandArgs args) {
+        output.printText(new String[] {
+                "\n`(idee/java-class)` current project\n",
+                "\t" + projectRoot().toString()
+        });
+        Map<String, String> dryRunOutput = new TreeMap<>();
+        dryRunOutput.put("`(idee/java-class)` tool", `(idee/java-class)`Tool.name());
+        output.info(help.createTextTable(dryRunOutput).toString());
+
+        output.printText(new String[] {
+                "\nCommand line:\n",
+                args.showCommand()
+        });
+    }
+
+    @Override
+    public String toString() {
+        return "`(idee/java-class)` [`(idee/java-class)`Options=" + `(idee/java-class)`Options
+                + ", properties=" + propertiesOptions.properties
+                + ", output=" + output
+                + ", params=" + params + "]";
+    }
+}
